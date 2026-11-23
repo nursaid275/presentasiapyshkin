@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Друзья мои, прекрасен наш союз — дружеская лирика Пушкина</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Marck+Script&display=swap" rel="stylesheet">
+<style>
+/* ===== ПАЛИТРА И ШРИФТЫ — меняйте здесь ===== */
+:root{
+  --night:#0b0d1b; --night2:#161b36; --paper:#dccaa0; --gold:#ebb64f; --ink:#2a3866; --rose:#c9604a;
+  --head:'Cormorant Garamond','Playfair Display',Georgia,serif;
+  --body:'Lora','PT Serif',Georgia,serif;
+  --hand:'Marck Script','Caveat',cursive;
+  --mx:0; --my:0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--night);color:var(--paper);font-family:var(--body)}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+#prog{position:fixed;top:0;left:0;height:3px;width:0;z-index:20;background:linear-gradient(90deg,var(--rose),var(--gold));box-shadow:0 0 12px var(--gold);transition:width .7s ease}
+
+/* ===== СЛАЙДЫ И ПЕРЕХОДЫ ===== */
+.slide{position:fixed;inset:0;z-index:2;display:flex;align-items:center;overflow-y:auto;padding:56px 6vw 84px;
+  opacity:0;visibility:hidden;transform:translateX(60px) scale(.985);transition:opacity .8s,transform .8s,visibility .8s}
+.slide.active{opacity:1;visibility:visible;transform:none}
+.slide.past{transform:translateX(-60px) scale(.985)}
+.wrap{width:100%;max-width:980px;margin:auto}
+h1,h2{font-family:var(--head);font-weight:700;color:var(--gold);line-height:1.08;text-shadow:0 0 28px rgba(235,182,79,.28)}
+h1{font-size:clamp(2.4rem,6.4vw,5rem)} h2{font-size:clamp(1.8rem,4.2vw,3.1rem);margin-bottom:.5em}
+p,li{font-size:clamp(1rem,1.7vw,1.25rem);line-height:1.6}
+.hand{font-family:var(--hand);color:var(--paper);font-size:clamp(1.3rem,2.8vw,2rem);line-height:1.5}
+.quote{border-left:2px solid var(--gold);padding-left:1rem;margin:1rem 0;min-height:3.2em}
+.tw::after{content:'';display:inline-block;width:2px;height:1em;background:var(--gold);margin-left:2px;vertical-align:-.12em;animation:blink 1s steps(2) infinite}
+.tw.done::after{display:none}
+.tw{white-space:pre-line}
+.dim{opacity:.72}
+.ghost{position:absolute;right:4vw;top:10vh;font-family:var(--head);font-size:clamp(6rem,24vw,20rem);color:rgba(220,202,160,.05);pointer-events:none;
+  transform:translate(calc(var(--mx)*-26px),calc(var(--my)*-18px));z-index:-1}
+.px{transform:translate(calc(var(--mx)*var(--d,10)*1px),calc(var(--my)*var(--d,10)*1px))}
+
+/* появление по очереди (stagger) */
+.slide.go .st{animation:rise .9s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i)*.14s + .25s)}
+/* «рукопись»: текст проявляется слева направо, как будто пишется пером */
+.slide.go .ink{animation:ink 2.6s cubic-bezier(.5,0,.3,1) both;animation-delay:calc(var(--i)*.14s + .5s)}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}}
+@keyframes ink{from{clip-path:inset(0 100% 0 0);opacity:.2}to{clip-path:inset(0 -5% 0 0);opacity:1}}
+@keyframes blink{50%{opacity:0}}
+
+/* слайд 2: жанры */
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:1.4rem}
+.col{padding:1.1rem;border:1px solid rgba(220,202,160,.25);border-radius:6px;background:rgba(22,27,54,.55)}
+.col b{font-family:var(--head);font-size:1.5rem;color:var(--paper)} .col span{display:block;margin-top:.3rem;opacity:.8}
+.col.me{border-color:var(--gold);box-shadow:0 0 30px rgba(235,182,79,.22);background:rgba(60,45,20,.5)} .col.me b{color:var(--gold)}
+
+/* слайд 3: таймлайн */
+.tl{position:relative;margin-top:1rem;padding-left:34px}
+.tl::before{content:'';position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--gold),transparent)}
+.ev{position:relative;margin-bottom:1rem}
+.ev::before{content:'';position:absolute;left:-33px;top:.45em;width:12px;height:12px;border-radius:50%;background:var(--gold);box-shadow:0 0 14px var(--gold)}
+.ev b{font-family:var(--head);font-size:1.7rem;color:var(--gold);margin-right:.6rem}
+
+/* слайд 4 и 7: карточки */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:1rem}
+.card{perspective:900px;height:150px;cursor:pointer}
+.card i{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:.9rem;border-radius:8px;backface-visibility:hidden;transition:transform .7s;font-style:normal}
+.card{position:relative}
+.card .f{background:linear-gradient(145deg,#1d2447,#111631);border:1px solid rgba(235,182,79,.4);align-items:center;text-align:center}
+.card .f b{font-family:var(--head);font-size:1.6rem;color:var(--gold)} .card .f small{opacity:.7}
+.card .b{background:var(--paper);color:#241c10;transform:rotateY(180deg);font-size:.92rem;line-height:1.4}
+.card:hover .f,.card.flip .f{transform:rotateY(-180deg)} .card:hover .b,.card.flip .b{transform:rotateY(0)}
+
+/* слайд 9: пузырьки-мотивы */
+.bubbles{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:1rem 0}
+.bub{border:1px solid var(--gold);background:radial-gradient(circle at 30% 30%,rgba(235,182,79,.35),rgba(22,27,54,.7));color:var(--paper);
+  font-family:var(--head);font-size:1.25rem;border-radius:50%;width:var(--s,118px);height:var(--s,118px);cursor:pointer;animation:float 5s ease-in-out infinite;animation-delay:var(--dl,0s);transition:box-shadow .3s}
+.bub:hover,.bub.on{box-shadow:0 0 34px rgba(235,182,79,.65)}
+@keyframes float{50%{transform:translateY(-14px)}}
+
+/* слайд 11: подсветка приёмов */
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin:.8rem 0}
+.tools button,.nav button{font:inherit;color:var(--paper);background:rgba(22,27,54,.7);border:1px solid rgba(220,202,160,.4);padding:.5rem 1rem;border-radius:99px;cursor:pointer;transition:.25s}
+.tools button:hover,.tools button.on{background:var(--gold);color:#1a1405;border-color:var(--gold)}
+.lines p{margin:.5rem 0} .lines .hand span{transition:.4s;border-radius:4px;padding:0 2px}
+.hl-a .a{background:rgba(201,96,74,.55)} .hl-b .b{background:rgba(70,100,190,.6)} .hl-c .c{background:rgba(235,182,79,.5);color:#fff}
+
+/* слайд 3: особенности */
+.feat{display:grid;gap:12px;margin-top:1rem}
+.feat div{padding:.8rem 1.1rem;border-left:2px solid var(--gold);background:rgba(22,27,54,.55);border-radius:0 6px 6px 0;line-height:1.5}
+.feat b{font-family:var(--head);font-size:1.45rem;color:var(--gold);margin-right:.7rem}
+
+/* навигация */
+.nav{position:fixed;bottom:16px;left:0;right:0;z-index:20;display:flex;justify-content:center;align-items:center;gap:14px}
+.nav button{width:42px;height:42px;padding:0;border-radius:50%;font-size:1.1rem}
+.nav button:hover{background:var(--gold);color:#111}
+#dots{display:flex;gap:8px}
+#dots i{width:9px;height:9px;border-radius:50%;background:rgba(220,202,160,.3);cursor:pointer;transition:.4s}
+#dots i.on{background:var(--gold);box-shadow:0 0 10px var(--gold);transform:scale(1.4)}
+#fs{position:fixed;right:16px;bottom:16px;z-index:21}
+button:focus-visible,.card:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+@media(max-width:700px){
+  .cols,.cards{grid-template-columns:1fr 1fr} .cols .col:last-child{grid-column:span 2}
+  .card{height:170px} .slide{padding-top:40px}
+  .nav{gap:8px} #dots i{width:7px;height:7px}
+}
+@media(prefers-reduced-motion:reduce){.slide.go .st,.slide.go .ink,.bub{animation-duration:.01s!important;animation-delay:0s!important}}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div id="prog"></div>
+
+<!-- ============ СЛАЙДЫ (тексты меняйте прямо здесь) ============ -->
+
+<!-- 1. ТИТУЛЬНЫЙ -->
+<section class="slide" style="text-align:center"><div class="wrap">
+  <h1 class="st">Друзья мои,<br>прекрасен наш союз</h1>
+  <p class="hand ink" style="margin-top:1.2rem">Дружеская лирика А. С. Пушкина</p>
+  <p class="st dim" style="margin-top:2.2rem;font-size:.95rem">листайте: стрелки ← → или свайп</p>
+</div></section>
+
+<!-- 2. ЧТО ТАКОЕ ДРУЖЕСКАЯ ЛИРИКА -->
+<section class="slide"><i class="ghost">ты</i><div class="wrap">
+  <h2 class="st">Что такое дружеская лирика</h2>
+  <p class="st">Стихи-разговор с другом: на «ты», с шуткой и теплом. Жанр — дружеское послание, стихотворение-письмо.</p>
+  <div class="cols">
+    <div class="col st"><b>Любовная</b><span>чувство к ней</span></div>
+    <div class="col st"><b>Гражданская</b><span>слово обществу</span></div>
+    <div class="col me st"><b>Дружеская</b><span>беседа с другом, «мы» и «ты»</span></div>
+  </div>
+</div></section>
+
+<!-- 3. ОСОБЕННОСТИ ДРУЖЕСКОЙ ЛИРИКИ -->
+<section class="slide"><i class="ghost">~</i><div class="wrap">
+  <h2 class="st">Особенности дружеской лирики</h2>
+  <div class="feat">
+    <div class="st"><b>Адресат</b>Стихи обращены к живому другу, названному по имени.</div>
+    <div class="st"><b>Интонация</b>Разговорная, как в письме: шутка, вопрос, совет.</div>
+    <div class="st"><b>Слог</b>Лёгкий, без тяжёлого пафоса; высокое слово рядом с бытовым.</div>
+    <div class="st"><b>Круг тем</b>Свобода, верность, радость встреч, утешение, память.</div>
+    <div class="st"><b>Герой</b>Не одиночка, а «мы»: союз единомышленников.</div>
+  </div>
+</div></section>
+
+<!-- 4. ЛИЦЕЙ -->
+<section class="slide"><i class="ghost">1811</i><div class="wrap">
+  <h2 class="st">Царскосельский лицей, 1811–1817</h2>
+  <div class="tl">
+    <div class="ev st"><b>1811</b>19 октября — открытие Лицея. Пушкин среди первых воспитанников.</div>
+    <div class="ev st"><b>1814</b>Первое стихотворение в печати: «К другу стихотворцу».</div>
+    <div class="ev st"><b>1815</b>На экзамене Державин слушает «Воспоминания в Царском Селе».</div>
+    <div class="ev st"><b>1817</b>Выпуск. Лицейское братство расходится по России.</div>
+  </div>
+</div></section>
+
+<!-- 4. ЛИЦЕЙСКИЕ ДРУЗЬЯ (наведите курсор или коснитесь карточки) -->
+<section class="slide"><div class="wrap">
+  <h2 class="st">Лицейские друзья</h2>
+  <p class="st dim">Наведите курсор или коснитесь карточки</p>
+  <div class="cards">
+    <div class="card st" tabindex="0"><i class="f"><b>Пущин</b><small>Иван, «Жанно»</small></i><i class="b">«Первый друг» поэта. В 1825-м приехал к нему в ссылку, в Михайловское.</i></div>
+    <div class="card st" tabindex="0"><i class="f"><b>Дельвиг</b><small>Антон</small></i><i class="b">Поэт и издатель альманаха «Северные цветы», где печатались друзья.</i></div>
+    <div class="card st" tabindex="0"><i class="f"><b>Кюхельбекер</b><small>Вильгельм, «Кюхля»</small></i><i class="b">Лицейский поэт. Участвовал в восстании 14 декабря 1825 года.</i></div>
+    <div class="card st" tabindex="0"><i class="f"><b>Горчаков</b><small>Александр</small></i><i class="b">Будущий канцлер Российской империи. Пушкин посвящал ему стихи.</i></div>
+    <div class="card st" tabindex="0"><i class="f"><b>Вольховский</b><small>Владимир, «Суворочка»</small></i><i class="b">Человек воли и характера. Окончил Лицей первым по успехам.</i></div>
+    <div class="card st" tabindex="0"><i class="f"><b>Матюшкин</b><small>Фёдор</small></i><i class="b">Моряк и полярный исследователь. Братство разбросало друзей по свету.</i></div>
+  </div>
+</div></section>
+
+<!-- 5. 19 ОКТЯБРЯ (фон: падающие листья) -->
+<section class="slide"><i class="ghost">19.10</i><div class="wrap">
+  <h2 class="st">«19 октября»</h2>
+  <p class="st">День открытия Лицея. Каждый год друзья собирались вместе. Пушкин писал к этой дате стихи.</p>
+  <div class="hand quote st"><span class="tw" data-d="1200" data-t="Роняет лес багряный свой убор…
+Друзья мои, прекрасен наш союз!"></span></div>
+  <p class="st dim">Последнее «19 октября» — 1836 год. Стихотворение осталось незаконченным.</p>
+</div></section>
+
+<!-- 6. ПУЩИНУ -->
+<section class="slide"><i class="ghost">1826</i><div class="wrap">
+  <h2 class="st">«Мой первый друг, мой друг бесценный…»</h2>
+  <p class="st">11 января 1825 года Пущин приехал к опальному поэту в Михайловское. Стихи — декабрь 1826-го.</p>
+  <div class="hand quote st"><span class="tw" data-d="1300" data-t="Мой первый друг, мой друг бесценный!
+И я судьбе благодарен был…"></span></div>
+  <div class="hand quote st"><span class="tw" data-d="4200" data-t="Да голос мой душе твоей
+Дарует то же утешенье!"></span></div>
+</div></section>
+
+<!-- 7. ДРУЗЬЯ-ПОЭТЫ -->
+<section class="slide"><div class="wrap">
+  <h2 class="st">Друзья-поэты</h2>
+  <div class="cards" style="grid-template-columns:repeat(2,1fr)">
+    <div class="card st" tabindex="0"><i class="f"><b>Жуковский</b><small>учитель и друг</small></i><i class="b">После «Руслана и Людмилы» подарил портрет с надписью: «Победителю-ученику от побеждённого учителя».</i></div>
+    <div class="card st" tabindex="0"><i class="f"><b>Дельвиг</b><small>друг со школьной скамьи</small></i><i class="b">«Северные цветы» стали общим домом для поэтов пушкинского круга.</i></div>
+    <div class="card st" tabindex="0"><i class="f"><b>Вяземский</b><small>собеседник</small></i><i class="b">Друг и корреспондент. Их переписка — живой разговор двух поэтов.</i></div>
+    <div class="card st" tabindex="0"><i class="f"><b>Баратынский</b><small>собрат по перу</small></i><i class="b">Пушкин высоко ценил его талант и следил за его стихами.</i></div>
+  </div>
+  <p class="st hand" style="margin-top:1rem">В «Арзамасе» Пушкин — «Сверчок».</p>
+</div></section>
+
+<!-- 8. ЧААДАЕВУ -->
+<section class="slide"><i class="ghost">1818</i><div class="wrap">
+  <h2 class="st">«К Чаадаеву», 1818</h2>
+  <p class="st">Гусарский офицер и мыслитель. Для Пушкина друг — человек общих идеалов и свободы.</p>
+  <div class="hand quote st"><span class="tw" data-d="1200" data-t="Любви, надежды, тихой славы
+Недолго нежил нас обман…"></span></div>
+  <div class="hand quote st"><span class="tw" data-d="4000" data-t="Пока свободою горим,
+Пока сердца для чести живы…"></span></div>
+</div></section>
+
+<!-- 9. МОТИВЫ (нажмите на пузырёк) -->
+<section class="slide"><div class="wrap">
+  <h2 class="st">Мотивы дружеской лирики</h2>
+  <div class="bubbles st" id="bubbles"></div>
+  <div class="hand quote st"><span class="tw" id="bq" data-t="Нажмите на пузырёк"></span></div>
+</div></section>
+
+<!-- 10. ИЗГНАНИЕ И 14 ДЕКАБРЯ -->
+<section class="slide"><i class="ghost">1825</i><div class="wrap">
+  <h2 class="st">Дружба в изгнании</h2>
+  <div class="tl">
+    <div class="ev st"><b>1825</b>Пушкин в ссылке, в Михайловском. Пущин навещает друга.</div>
+    <div class="ev st"><b>14 декабря</b>Восстание. Среди участников — Пущин и Кюхельбекер.</div>
+    <div class="ev st"><b>1827</b>Послание узникам Сибири: «Во глубине сибирских руд».</div>
+  </div>
+  <div class="hand quote st"><span class="tw" data-d="2600" data-t="Храните гордое терпенье…"></span></div>
+  <p class="st dim">Пущин позже написал «Записки о Пушкине».</p>
+</div></section>
+
+<!-- 11. ПРИЁМЫ (нажимайте кнопки — слова подсвечиваются) -->
+<section class="slide"><div class="wrap">
+  <h2 class="st">Как это написано</h2>
+  <div class="tools st" id="tools">
+    <button data-k="a">Обращения</button><button data-k="b">Поэтизмы и архаика</button><button data-k="c">Разговорная интонация</button>
+  </div>
+  <div class="lines st" id="lines">
+    <p class="hand"><span class="a">Мой первый друг, мой друг</span> <span class="b">бесценный</span>!</p>
+    <p class="hand"><span class="a">Товарищ</span>, <span class="c">верь</span>: взойдёт она…</p>
+    <p class="hand">Роняет лес <span class="b">багряный</span> свой <span class="b">убор</span>…</p>
+    <p class="hand"><span class="c">Бог помочь</span> вам, <span class="a">друзья мои</span>…</p>
+  </div>
+  <p class="st dim">Лёгкость слога: высокое слово рядом с живой речью.</p>
+</div></section>
+
+<!-- ФИНАЛ -->
+<section class="slide" style="text-align:center"><div class="wrap">
+  <h2 class="st">Почему эти стихи живут</h2>
+  <p class="hand quote st" style="text-align:left;max-width:760px;margin:1.2rem auto"><span class="tw" data-d="1200" data-t="Они говорят о том, что нужно каждому: о верности, памяти и праве сказать «ты» большому миру."></span></p>
+  <p class="hand ink" style="margin-top:1.6rem">Друзья мои, прекрасен наш союз!</p>
+</div></section>
+
+<div class="nav"><button id="prev" aria-label="Назад">‹</button><div id="dots"></div><button id="next" aria-label="Вперёд">›</button></div>
+<button id="fs" class="nav-fs" aria-label="Полный экран" style="width:42px;height:42px;border-radius:50%;border:1px solid rgba(220,202,160,.4);background:rgba(22,27,54,.7);color:#dccaa0;cursor:pointer">⛶</button>
+
+<script>
+/* ===== ДАННЫЕ, ЕДИНОЖДЫ ЗАДАВАЕМЫЕ В JS ===== */
+// Пузырьки слайда 9: [название, цитата, размер]
+const MOTIFS=[
+ ['Свобода','Пока свободою горим,\nПока сердца для чести живы…',128],
+ ['Верность','Друзья мои, прекрасен наш союз!',112],
+ ['Радость встреч','Была пора: наш праздник молодой\nСиял, шумел и розами венчался…',140],
+ ['Утешение','Да голос мой душе твоей\nДарует то же утешенье!',122],
+ ['Память','Роняет лес багряный свой убор…',108]
+];
+
+/* ===== СЛАЙДЫ ===== */
+const S=[...document.querySelectorAll('.slide')], $=s=>document.querySelector(s);
+let cur=-1;
+S.forEach(s=>s.querySelectorAll('.st').forEach((e,i)=>e.style.setProperty('--i',i)));
+const dots=$('#dots');
+S.forEach((_,i)=>{const d=document.createElement('i');d.onclick=()=>go(i);dots.appendChild(d)});
+
+function typeIt(el,delay){ // эффект печатной машинки
+  const t=el.dataset.t;clearTimeout(el._t);el.textContent='';el.classList.remove('done');let i=0;
+  const step=()=>{el.textContent=t.slice(0,++i);if(i<t.length)el._t=setTimeout(step,45);else el.classList.add('done')};
+  el._t=setTimeout(step,delay);
+}
+function go(n){
+  n=Math.max(0,Math.min(S.length-1,n));if(n===cur)return;
+  S.forEach((s,i)=>{s.classList.remove('go');s.classList.toggle('active',i===n);s.classList.toggle('past',i<n)});
+  void document.body.offsetWidth; S[n].classList.add('go');
+  S[n].querySelectorAll('.tw').forEach(el=>{if(el.id!=='bq')typeIt(el,+el.dataset.d||800)});
+  [...dots.children].forEach((d,i)=>d.classList.toggle('on',i===n));
+  $('#prog').style.width=((n+1)/S.length*100)+'%';
+  leaves=(n===5);candleT=(n===0)?1:0;cur=n;
+}
+$('#prev').onclick=()=>go(cur-1);$('#next').onclick=()=>go(cur+1);
+addEventListener('keydown',e=>{
+  if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1)}
+  if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key))go(cur-1);
+  if(e.key==='f'||e.key==='F')fs();
+});
+let tx=0,ty=0;
+addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
+addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;
+  if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy))go(cur+(dx<0?1:-1))},{passive:true});
+function fs(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen?.()}
+$('#fs').onclick=fs;
+addEventListener('mousemove',e=>{ // параллакс от мыши
+  document.documentElement.style.setProperty('--mx',(e.clientX/innerWidth-.5)*2);
+  document.documentElement.style.setProperty('--my',(e.clientY/innerHeight-.5)*2);
+});
+
+/* карточки: переворот по клику (для телефона) */
+document.querySelectorAll('.card').forEach(c=>{c.onclick=()=>c.classList.toggle('flip');c.onkeydown=e=>{if(e.key==='Enter')c.classList.toggle('flip')}});
+
+/* пузырьки-мотивы */
+MOTIFS.forEach(([name,q,s],i)=>{
+  const b=document.createElement('button');b.className='bub';b.textContent=name;
+  b.style.setProperty('--s',s+'px');b.style.setProperty('--dl',(i*.7)+'s');
+  b.onclick=()=>{document.querySelectorAll('.bub').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+    const el=$('#bq');el.dataset.t=q;typeIt(el,0)};
+  $('#bubbles').appendChild(b);
+});
+
+/* подсветка приёмов */
+$('#tools').querySelectorAll('button').forEach(b=>b.onclick=()=>{
+  b.classList.toggle('on');$('#lines').classList.toggle('hl-'+b.dataset.k)});
+
+
+/* ===== ФОН НА CANVAS: свеча, искры, пылинки, листья ===== */
+const cv=$('#bg'),ctx=cv.getContext('2d');let W,H,D;
+function size(){D=devicePixelRatio||1;W=innerWidth;H=innerHeight;cv.width=W*D;cv.height=H*D;ctx.setTransform(D,0,0,D,0,0)}
+addEventListener('resize',size);size();
+let leaves=false,candleT=1,candleA=0,sparks=[],dust=[],lv=[];
+for(let i=0;i<70;i++)dust.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.6+.3,v:Math.random()*.25+.05,p:Math.random()*6});
+
+function candle(x,y,s,a,t,f){
+  ctx.save();ctx.globalAlpha=a;
+  const g=ctx.createRadialGradient(x,y-60*s,10,x,y-60*s,460*s);
+  g.addColorStop(0,'rgba(255,175,70,'+(.38*f)+')');g.addColorStop(1,'rgba(255,175,70,0)');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  const bg=ctx.createLinearGradient(x-24*s,0,x+24*s,0);
+  bg.addColorStop(0,'#b7a279');bg.addColorStop(.5,'#f1e3bd');bg.addColorStop(1,'#a8946b');
+  ctx.fillStyle=bg;ctx.beginPath();ctx.roundRect(x-24*s,y,48*s,H,8*s);ctx.fill();
+  const sw=Math.sin(t*3.1)*4*s+Math.sin(t*7.3)*2*s,fh=(78+Math.sin(t*9)*7)*s;
+  ctx.strokeStyle='#2a2118';ctx.lineWidth=2.5*s;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+sw*.2,y-16*s);ctx.stroke();
+  const fl=(w,h,c1,c2)=>{const fg=ctx.createLinearGradient(0,y-h,0,y-14*s);fg.addColorStop(0,c1);fg.addColorStop(1,c2);ctx.fillStyle=fg;
+    ctx.beginPath();ctx.moveTo(x,y-14*s);ctx.bezierCurveTo(x-w,y-14*s-h*.3,x-w*.5+sw*.4,y-h*.8,x+sw,y-h);
+    ctx.bezierCurveTo(x+w*.5+sw*.4,y-h*.8,x+w,y-14*s-h*.3,x,y-14*s);ctx.fill()};
+  fl(22*s,fh,'rgba(255,120,30,.0)','rgba(255,170,50,.95)');fl(11*s,fh*.62,'rgba(255,245,200,.2)','rgba(255,250,225,1)');
+  ctx.restore();
+}
+function loop(ts){
+  const t=ts/1000,f=.85+Math.sin(t*8)*.08+Math.sin(t*13.7)*.06;
+  ctx.fillStyle='#0b0d1b';ctx.fillRect(0,0,W,H);
+  const vg=ctx.createRadialGradient(W/2,H*.55,H*.1,W/2,H/2,H*.95);vg.addColorStop(0,'#1a1f40');vg.addColorStop(1,'#080914');
+  ctx.fillStyle=vg;ctx.fillRect(0,0,W,H);
+  candleA+=(candleT-candleA)*.04;
+  /* маленькое тёплое свечение в углу на остальных слайдах */
+  const cg=ctx.createRadialGradient(0,H,0,0,H,H*.8);cg.addColorStop(0,'rgba(255,170,70,'+(.2*f*(1-candleA))+')');cg.addColorStop(1,'rgba(255,170,70,0)');
+  ctx.fillStyle=cg;ctx.fillRect(0,0,W,H);
+  const wide=W>800,cs=Math.min(W,H)/620,cx=wide?W*.78:W*.5,cy=wide?H*.5:H*.8;
+  if(candleA>.02){candle(cx,cy,cs,candleA,t,f);
+    if(Math.random()<.5)sparks.push({x:cx+(Math.random()-.5)*14*cs,y:cy-70*cs,vx:(Math.random()-.5)*.8,vy:-Math.random()*1.6-.4,l:1})}
+  /* искры */
+  sparks=sparks.filter(p=>p.l>0);
+  sparks.forEach(p=>{p.x+=p.vx+Math.sin(t*5+p.y*.05)*.3;p.y+=p.vy;p.l-=.011;
+    ctx.fillStyle='rgba(255,'+(150+p.l*80|0)+',60,'+p.l+')';ctx.fillRect(p.x,p.y,2,2)});
+  /* пылинки в свете */
+  dust.forEach(d=>{d.y-=d.v;d.x+=Math.sin(t+d.p)*.15;if(d.y<-5){d.y=H+5;d.x=Math.random()*W}
+    ctx.fillStyle='rgba(240,210,150,'+(.25+Math.sin(t*2+d.p)*.15)+')';ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,7);ctx.fill()});
+  /* листья (слайд «19 октября») */
+  if(leaves&&Math.random()<.22)lv.push({x:Math.random()*W,y:-20,s:Math.random()*10+9,r:Math.random()*6,vr:(Math.random()-.5)*.05,vy:Math.random()*1.2+.7,
+    c:['#c9604a','#e0a030','#a8452e','#d9792b'][Math.random()*4|0],p:Math.random()*6});
+  lv=lv.filter(l=>l.y<H+30);
+  lv.forEach(l=>{l.y+=l.vy;l.x+=Math.sin(t*1.5+l.p)*1.1;l.r+=l.vr;
+    ctx.save();ctx.translate(l.x,l.y);ctx.rotate(l.r);ctx.fillStyle=l.c;ctx.globalAlpha=.85;
+    ctx.beginPath();ctx.moveTo(0,-l.s);ctx.quadraticCurveTo(l.s*.9,0,0,l.s);ctx.quadraticCurveTo(-l.s*.9,0,0,-l.s);ctx.fill();
+    ctx.strokeStyle='rgba(60,25,10,.6)';ctx.beginPath();ctx.moveTo(0,-l.s);ctx.lineTo(0,l.s);ctx.stroke();ctx.restore()});
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+go(0);
+</script>
+</body>
+</html>
